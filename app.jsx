@@ -8,9 +8,11 @@ const EMAIL = "tavo.lop33@gmail.com";
 // UI main component
 const JobItem = ({ job, candidate }) => {
   const [repoUrl, setRepoUrl] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
 
     try {
       const response = await fetch(
@@ -35,11 +37,14 @@ const JobItem = ({ job, candidate }) => {
         throw new Error(data?.message || "Error en la postulación");
       }
 
+      // Not ideal but for simplicity
       alert("Postulación enviada correctamente");
       setRepoUrl("");
     } catch (error) {
       alert(error.message);
       console.error(error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -55,7 +60,9 @@ const JobItem = ({ job, candidate }) => {
           onChange={(e) => setRepoUrl(e.target.value)}
           required
         />
-        <button type="submit">Enviar</button>
+        <button type="submit" diabled={submitting}>
+          {submitting ? "Enviando..." : "Enviar"}
+        </button>
       </form>
     </section>
   );
@@ -105,6 +112,8 @@ const App = () => {
   if (loading) return <p>Cargando...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
+  // check if candidate is null
+  if (!candidate) return <p>No se pudo cargar la información del candidato.</p>;
   // main render of job positions and inputs
   return (
     <>
