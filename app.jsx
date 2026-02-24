@@ -60,7 +60,7 @@ const JobItem = ({ job, candidate }) => {
           onChange={(e) => setRepoUrl(e.target.value)}
           required
         />
-        <button type="submit" diabled={submitting}>
+        <button type="submit" disabled={submitting}>
           {submitting ? "Enviando..." : "Enviar"}
         </button>
       </form>
