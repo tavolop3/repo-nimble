@@ -26,6 +26,7 @@ const JobItem = ({ job, candidate }) => {
             uuid: candidate.uuid,
             jobId: job.id,
             candidateId: candidate.candidateId,
+            applicationId: candidate.applicationId, // Not specified in mail but demanded by the server
             repoUrl: repoUrl,
           }),
         }
@@ -34,7 +35,8 @@ const JobItem = ({ job, candidate }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data?.message || "Error en la postulación");
+        // console.log("Response error:", data);
+        throw new Error(data?.message || "Error en la postulación, intentá más tarde");
       }
 
       // Not ideal but for simplicity
